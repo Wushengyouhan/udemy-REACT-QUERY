@@ -3,3 +3,9 @@
   top: 5px;
   right: 5px;
 }
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
