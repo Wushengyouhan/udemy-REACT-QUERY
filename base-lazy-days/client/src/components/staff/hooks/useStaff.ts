@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import type { Staff } from "@shared/types";
 
@@ -18,11 +18,18 @@ export function useStaff() {
   // for filtering staff by treatment
   const [filter, setFilter] = useState("all");
 
+  const selectFn = useCallback((unfilteredStaff: Staff[], filter: string) => {
+    return filter === "all"
+      ? unfilteredStaff
+      : filterByTreatment(unfilteredStaff, filter);
+  }, []);
+
   // TODO: get data from server via useQuery
   const fallback: Staff[] = [];
   const { data: staff = fallback } = useQuery({
     queryKey: [queryKeys.staff],
     queryFn: getStaff,
+    select: (data) => selectFn(data, filter),
   });
 
   return { staff, filter, setFilter };
