@@ -7,6 +7,7 @@ import { axiosInstance, getJWTHeader } from "@/axiosInstance";
 import { queryKeys } from "@/react-query/constants";
 import { useQuery } from "@tanstack/react-query";
 import { generateUserKey } from "@/react-query/key-factories";
+import { useQueryClient } from "@tanstack/react-query";
 
 // query function
 async function getUser(userId: number, userToken: string) {
@@ -21,6 +22,8 @@ async function getUser(userId: number, userToken: string) {
 }
 
 export function useUser() {
+  const queryClient = useQueryClient();
+
   // get details on the userId
   const { userId, userToken } = useLoginData();
 
@@ -34,11 +37,16 @@ export function useUser() {
   // meant to be called from useAuth
   function updateUser(newUser: User): void {
     // TODO: update the user in the query cache
+    queryClient.setQueryData(
+      generateUserKey(newUser.id, newUser.token),
+      newUser
+    );
   }
 
   // meant to be called from useAuth
   function clearUser() {
     // TODO: reset user to null in query cache
+    queryClient.removeQueries({ queryKey: [queryKeys.user] });
   }
 
   return { user, updateUser, clearUser };
