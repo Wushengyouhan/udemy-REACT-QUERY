@@ -83,6 +83,7 @@ export function useAppointments() {
     select: (data) => selectFn(data, showAll),
     ...commonOptions,
     refetchOnWindowFocus: true,
+    refetchInterval: 1000 * 60, // 1 minute
   });
 
   // prefetch the appointments for the next month
