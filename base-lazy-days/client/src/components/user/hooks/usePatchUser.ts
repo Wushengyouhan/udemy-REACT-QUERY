@@ -5,6 +5,7 @@ import type { User } from "@shared/types";
 
 import { axiosInstance, getJWTHeader } from "../../../axiosInstance";
 import { useUser } from "./useUser";
+import { toast } from "@/components/app/toast";
 
 // for when we need a server function
 async function patchUserOnServer(
@@ -31,7 +32,10 @@ export function usePatchUser() {
 
   const { mutate: patchUser } = useMutation({
     mutationFn: (newData: User) => patchUserOnServer(newData, user),
-    onSuccess: (userData: User | null) => updateUser(userData),
+    onSuccess: (userData: User | null) => {
+      toast({ title: "user updated!", status: "success" });
+      updateUser(userData);
+    },
   });
 
   return patchUser;
