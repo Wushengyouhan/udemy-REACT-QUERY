@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
-
 import { Treatments } from "../Treatments";
+
+import { render, screen } from "@/test-utils";
 
 test("renders response from query", () => {
   // write test here
+  render(<Treatments />);
 });
